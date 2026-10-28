@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="academic-paper">
+<head>
+<meta charset="utf-8">
+<title>科技创新和产业创新的深度融合（无讲稿版）</title>
+<link rel="stylesheet" href="assets/fonts.css">
+<link rel="stylesheet" href="assets/base.css">
+<link rel="stylesheet" id="theme-link" href="assets/themes/academic-paper.css">
+<link rel="stylesheet" href="assets/animations/animations.css">
+<style>
+  :root{
+    --ink:#0a0a0a; --ink-2:#333; --ink-3:#707070;
+    --navy:#1a3a7a; --navy-l:#e9eef7;
+    --red:#8a1a1a; --red-l:#f7ecec;
+    --gold:#8a6a1a; --gold-l:#f6f1e2;
+    --rule:rgba(20,20,20,.16);
+  }
+  .slide{padding:60px 84px}
+  .slide h1.title{font-size:64px;line-height:1.18}
+  .slide h2.title{font-size:50px;letter-spacing:.01em}
+  .lede{font-size:19px;line-height:1.7;color:var(--ink-2)}
+  .body-txt{font-size:15.5px;line-height:1.85;color:var(--ink-2);text-align:justify}
+  .sm{font-size:13.5px;line-height:1.75;color:var(--ink-2)}
+  .xs{font-size:12.5px;line-height:1.7;color:var(--ink-2)}
+  .lbl{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+  .rule-thick{height:2px;background:var(--ink);width:56px}
+  .mt-s{margin-top:8px}.mt-m{margin-top:16px}.mt-l{margin-top:28px}
+
+  /* 章节页 */
+  .sec-num{font-family:var(--font-serif);font-size:104px;line-height:.9;color:var(--navy);opacity:.18;font-weight:700}
+  .sec-list{columns:2;column-gap:48px;font-size:15px;color:var(--ink-2);line-height:1.95}
+  .sec-list div{break-inside:avoid}
+  .sec-sub{font-family:var(--font-serif);font-size:24px;color:var(--navy);margin-top:6px}
+
+  /* 封面 */
+  .cover-meta{display:flex;gap:40px;flex-wrap:wrap;font-size:13.5px;color:var(--ink-3);letter-spacing:.04em}
+  .cover-meta b{display:block;color:var(--ink);font-size:15px;font-weight:600;margin-top:3px;letter-spacing:0}
+
+  /* 目录 */
+  .toc{display:grid;grid-template-columns:1fr 1fr;gap:16px 56px}
+  .toc-item{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:start;padding:14px 0;border-top:1px solid var(--rule)}
+  .toc-n{font-family:var(--font-serif);font-size:28px;color:var(--navy);line-height:1.05;font-weight:700;min-width:44px}
+  .toc-t{font-size:19px;font-weight:600;color:var(--ink)}
+  .toc-s{font-size:13px;color:var(--ink-3);margin-top:5px;line-height:1.7}
+  .toc-s b{font-weight:400;color:var(--ink-2)}
+
+  /* 时间轴 */
+  .axis{position:relative;margin-top:56px}
+  .axis::before{content:"";position:absolute;left:0;right:0;top:26px;height:1px;background:var(--ink)}
+  .axis-row{display:grid;grid-template-columns:repeat(7,1fr);gap:0}
+  .axis-col{position:relative;padding:0 16px 0 0}
+  .axis-col .date{font-family:var(--font-serif);font-size:17px;font-weight:700;color:var(--navy);letter-spacing:.02em}
+  .axis-col .node{width:13px;height:13px;background:var(--navy);border-radius:50%;margin:14px 0 20px 0;position:relative}
+  .axis-col .node::after{content:"";position:absolute;inset:-5px;border:1px solid var(--navy);border-radius:50%;opacity:.4}
+  .axis-col .doc{font-size:15px;font-weight:700;line-height:1.5;color:var(--ink)}
+  .axis-col.now .node{background:var(--red)}
+  .axis-col.now .node::after{border-color:var(--red)}
+  .axis-col.now .date{color:var(--red)}
+
+  /* 卡片 */
+  .doc-card{border:1px solid var(--rule);border-left:4px solid var(--navy);padding:18px 22px;background:var(--surface)}
+  .doc-card.red{border-left-color:var(--red)}
+  .doc-card.gold{border-left-color:var(--gold)}
+  .doc-card h4{font-size:16.5px;margin-bottom:3px}
+  .doc-card .when{font-size:12px;color:var(--ink-3);letter-spacing:.06em;margin-bottom:8px}
+
+  /* 引文 */
+  .quote{border-left:3px solid var(--navy);background:var(--navy-l);padding:15px 22px;font-size:15px;line-height:1.85;color:var(--ink);text-align:justify}
+  .quote.red{border-left-color:var(--red);background:var(--red-l)}
+  .quote.gold{border-left-color:var(--gold);background:var(--gold-l)}
+  .quote em{font-style:normal;background:linear-gradient(transparent 62%, #f2e2a8 62%);font-weight:600}
+
+  /* 要点块 */
+  .pts{display:grid;gap:14px}
+  .pt{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:start}
+  .pt .mk{font-family:var(--font-serif);font-size:15px;font-weight:700;color:#fff;background:var(--navy);width:28px;height:28px;display:flex;align-items:center;justify-content:center;margin-top:2px}
+  .pt .tx h4{font-size:16.5px;margin-bottom:4px}
+  .pt .tx p{font-size:13.5px;line-height:1.8;color:var(--ink-2);margin:0;text-align:justify}
+
+  /* 链条 */
+  .chain{display:flex;align-items:stretch}
+  .chain .node{flex:1;border:1px solid var(--rule);padding:12px 10px;text-align:center;font-size:13.5px;background:var(--surface);display:flex;align-items:center;justify-content:center;line-height:1.5}
+  .chain .node.b{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .chain .arw{width:24px;display:flex;align-items:center;justify-content:center;color:var(--navy);font-size:16px}
+
+  /* 表格 */
+  table.law{width:100%;border-collapse:collapse;font-size:13px;line-height:1.6}
+  table.law th{background:var(--ink);color:#fff;text-align:left;padding:9px 13px;font-weight:600;font-size:13px;letter-spacing:.04em}
+  table.law td{border:1px solid var(--rule);padding:9px 13px;vertical-align:top;color:var(--ink-2)}
+  table.law td.j{font-weight:700;color:var(--ink)}
+  table.law tr:nth-child(even) td{background:#faf9f4}
+  table.law.compact{font-size:12.2px;line-height:1.55}
+  table.law.compact th{padding:7px 11px;font-size:12.2px}
+  table.law.compact td{padding:7px 11px}
+
+  /* 密排页 */
+  .s-dense .doc-card{padding:9px 14px}
+  .s-dense .doc-card h4{font-size:14px;margin-bottom:2px}
+  .s-dense .xs{font-size:11.2px;line-height:1.55}
+  .s-dense .two{gap:20px}
+  .s-dense .mt-s{margin-top:6px}
+  .s-dense .chain .node{padding:4px 6px;font-size:11px;line-height:1.4}
+  .s-dense .chain .arw{font-size:13px;width:18px}
+  .s-dense .quad{margin-top:5px}
+  .s-dense .quad .cell{padding:6px 10px}
+  .s-dense .quad .cell b{font-size:12.4px}
+  .s-dense .quad .cell em{font-size:10.6px}
+  .s-dense .quote{font-size:12px;padding:10px 15px;line-height:1.65}
+  .s-dense .lbl{font-size:12px}
+
+  /* 四象限 */
+  .quad{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--ink);margin-top:8px}
+  .quad .cell{border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:11px 14px}
+  .quad .cell:nth-child(even){border-right:none}
+  .quad .cell b{display:block;font-size:14px;color:var(--navy);margin-bottom:2px}
+  .quad .cell em{font-style:normal;color:var(--ink-3);font-size:12px}
+
+  /* 案例 */
+  .case{border:1px solid var(--rule);padding:16px 20px;background:var(--surface)}
+  .case .h{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:7px}
+  .case p{font-size:13.5px;line-height:1.75;color:var(--ink-2);margin:0 0 8px;text-align:justify}
+  .case .res{font-size:13.5px;line-height:1.7;color:var(--ink);border-top:1px dashed var(--rule);padding-top:8px}
+
+  /* 数字块 */
+  .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .kpi{border-top:3px solid var(--navy);padding-top:10px}
+  .kpi .n{font-family:var(--font-serif);font-size:34px;font-weight:700;color:var(--navy);line-height:1.1}
+  .kpi .d{font-size:12.5px;color:var(--ink-3);margin-top:4px;line-height:1.5}
+
+  /* 流程步骤 */
+  .steps{display:grid;gap:12px}
+  .step{display:grid;grid-template-columns:200px 1fr;gap:22px;align-items:start;border-top:1px solid var(--rule);padding-top:12px}
+  .step .k{font-size:15px;font-weight:700;color:var(--navy)}
+  .step .v{font-size:14px;line-height:1.8;color:var(--ink-2);text-align:justify}
+
+  /* 双栏 */
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:30px}
+  .two-col{border-top:3px solid var(--navy);padding-top:12px}
+  .two-col.alt{border-top-color:var(--red)}
+  .big-quote{font-family:var(--font-serif);font-size:32px;line-height:1.6;color:var(--ink);text-align:center}
+  .big-quote em{font-style:normal;color:var(--navy)}
+
+  /* 政策原文页 */
+  .pol .title{font-size:44px;line-height:1.16}
+  .pol .t-sub{font-size:26px;color:var(--ink-3);font-weight:400}
+  .pol-meta{font-size:12.5px;color:var(--ink-3);letter-spacing:.04em;margin-top:6px}
+  .src{border-left:3px solid var(--gold);background:var(--gold-l);padding:13px 20px;font-size:13.5px;line-height:1.82;color:var(--ink);text-align:justify}
+  .src .ttl{display:block;font-weight:700;color:var(--gold);font-size:13px;letter-spacing:.06em;margin-bottom:5px}
+  .src em{font-style:normal;background:linear-gradient(transparent 62%,#f2e2a8 62%);font-weight:600}
+  .pol-file{font-family:var(--font-serif);font-size:17px;color:var(--navy);font-weight:700;border-top:1px solid var(--rule);padding-top:9px;margin-top:12px}
+  .pol-item{border-top:1px solid var(--rule);padding-top:9px;margin-top:10px}
+  .pol-item .h{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:4px}
+  .pol-item .p{font-size:13px;line-height:1.8;color:var(--ink-2);margin:0;text-align:justify}
+  .pol-item .p em{font-style:normal;background:linear-gradient(transparent 62%,#f2e2a8 62%);font-weight:600}
+  .pol-chain{display:flex;align-items:stretch;margin-top:14px}
+  .pol-chain .node{flex:1;border:1px solid var(--rule);padding:11px 12px;text-align:center;font-size:13px;background:var(--surface);display:flex;align-items:center;justify-content:center;line-height:1.5}
+  .pol-chain .node.b{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .pol-chain .arw{width:26px;display:flex;align-items:center;justify-content:center;color:var(--navy);font-size:17px}
+  .pol-tags{display:flex;gap:10px;margin-bottom:4px}
+  .pol-tags .tag{font-size:12.5px;padding:4px 14px;border:1px solid var(--rule);border-radius:999px;color:var(--ink-2);background:var(--surface-2)}
+  .pol-tags .tag:nth-child(3){background:var(--navy);color:#fff;border-color:var(--navy)}
+
+  /* 矮屏适配 */
+  @media (max-height:820px){
+    .slide{padding:38px 62px}
+    .slide h1.title{font-size:54px}
+    .slide h2.title{font-size:42px}
+    .body-txt{font-size:14px;line-height:1.72}
+    .sm{font-size:12.4px;line-height:1.66}
+    .xs{font-size:11.4px;line-height:1.58}
+    .doc-card{padding:12px 16px}
+    .doc-card h4{font-size:14.6px}
+    .quote{font-size:13px;padding:11px 18px;line-height:1.7}
+    .pt .tx p{font-size:12.4px;line-height:1.7}
+    .pt .tx h4{font-size:14.6px}
+    table.law{font-size:11.8px}
+    table.law th{font-size:11.8px;padding:7px 10px}
+    table.law td{padding:7px 10px}
+    table.law.compact{font-size:11px}
+    table.law.compact th{font-size:11px;padding:6px 9px}
+    table.law.compact td{padding:6px 9px}
+    .case{padding:13px 17px}
+    .case p,.case .res{font-size:12.4px;line-height:1.68}
+    .step .v{font-size:12.6px;line-height:1.7}
+    .step .k{font-size:13.6px}
+    .mt-l{margin-top:20px}.mt-m{margin-top:12px}
+    .axis{margin-top:30px}
+    .s-dense .xs{font-size:10.6px;line-height:1.5}
+    .s-dense .doc-card{padding:8px 12px}
+    .s-dense .doc-card h4{font-size:13px}
+    .s-dense .quote{font-size:11.2px;padding:9px 13px}
+  }
+  @media (max-height:760px){
+    .slide{padding:28px 50px}
+    .slide h1.title{font-size:46px}
+    .slide h2.title{font-size:36px}
+    .body-txt{font-size:13.2px;line-height:1.66}
+    .xs{font-size:10.8px;line-height:1.54}
+    .doc-card{padding:10px 14px}
+    .doc-card h4{font-size:13.6px}
+    .quote{font-size:12px;padding:9px 15px;line-height:1.66}
+    table.law{font-size:11px;line-height:1.5}
+    table.law th{font-size:11px;padding:6px 9px}
+    table.law td{padding:6px 9px}
+    table.law.compact{font-size:10.4px;line-height:1.48}
+    table.law.compact th{font-size:10.4px;padding:5px 8px}
+    table.law.compact td{padding:5px 8px}
+    .case p,.case .res{font-size:11.8px;line-height:1.62}
+    .case{padding:11px 15px}
+    .s-dense .xs{font-size:9.5px;line-height:1.42}
+    .s-dense .doc-card{padding:6px 9px}
+    .s-dense .doc-card h4{font-size:12.2px}
+    .s-dense .quote{font-size:10.4px;padding:7px 10px;line-height:1.55}
+    .s-dense .mt-s{margin-top:5px}
+    .s-dense .lbl{font-size:11px}
+    .s-dense .chain .node{padding:3px 4px;font-size:10px}
+    .s-dense .quad .cell{padding:5px 8px}
+    .s-dense .quad .cell b{font-size:11.6px}
+    .s-dense .quad .cell em{font-size:10px}
+  }
+</style>
+</head>
+<body>
+<div class="deck" data-themes="academic-paper,editorial-serif,minimal-white" data-theme-base="assets/themes/">
+
+<!-- ============ 1 封面 ============ -->
+<section class="slide is-active" data-title="封面">
+  <div class="deck-header"><span class="eyebrow">学术汇报</span><span class="eyebrow">融合性创新 · 专利保护</span></div>
+  <div style="max-width:1120px">
+    <p class="kicker" style="font-style:normal;font-size:15px;letter-spacing:.08em">学术汇报</p>
+    <h1 class="title anim-fade-up" style="margin-top:12px">科技创新和产业创新的<br>深度融合</h1>
+    <div class="rule-thick mt-l"></div>
+    <p class="lede mt-m">概念来源 · 概念含义 · 理论基础 · 专利应用 · 与脑机接口专利结合</p>
+    <div class="cover-meta mt-l">
+      <div>汇报人<b>（姓名待填）</b></div>
+      <div>汇报日期<b>2026 年 10 月</b></div>
+      <div>文本依据<b>《文字文稿1》</b></div>
+    </div>
+  </div>
+  <div class="deck-footer"><span class="dim2">科技创新和产业创新的深度融合</span><span class="slide-number" data-current="1" data-total="29"></span></div>
+</section>
+
+<!-- ============ 2 汇报框架 ============ -->
+<section class="slide" data-title="汇报框架">
+  <p class="lbl">Outline · 汇报框架</p>
+  <h2 class="title">汇报框架</h2>
+  <div class="rule-thick" style="margin:6px 0 22px"></div>
+  <div class="toc anim-stagger-list">
+    <div class="toc-item"><div class="toc-n">01</div><div><div class="toc-t">概念来源</div>
+      <div class="toc-s">政策沿革时间轴 · 政策原文：讲话 · 二十届三中全会《全面深化改革决定》 · 《十五五建议》 · 《十五五纲要》 · 《发展新质生产力的意见》 · 《科技兴商意见》 · 《两创意见》</div></div></div>
+    <div class="toc-item"><div class="toc-n">02</div><div><div class="toc-t">概念含义</div>
+      <div class="toc-s"><b>科技创新</b> · <b>产业创新</b> · 科技创新和产业创新的深度融合 · <b>特点</b></div></div></div>
+    <div class="toc-item"><div class="toc-n">03</div><div><div class="toc-t">理论基础</div>
+      <div class="toc-s"><b>科技创新</b> · <b>产业创新</b></div></div></div>
+    <div class="toc-item"><div class="toc-n">04</div><div><div class="toc-t">专利应用</div>
+      <div class="toc-s">专利应用 · <b>专利对融合性创新的作用</b></div></div></div>
+    <div class="toc-item"><div class="toc-n">05</div><div><div class="toc-t">与脑机接口专利结合</div>
+      <div class="toc-s"><b>目前的问题</b> · <b>如何赚钱</b> · <b>专利角度的困境</b> · 创造性</div></div></div>
+  </div>
+  <div class="deck-footer"><span class="dim2">汇报框架</span><span class="slide-number" data-current="2" data-total="29"></span></div>
+</section>
+
+<!-- ============ 3 概念来源 ============ -->
+<section class="slide" data-title="概念来源">
+  <div style="display:flex;align-items:center;gap:48px">
+    <div class="sec-num">01</div>
+    <div style="flex:1">
+      <p class="lbl">Part One</p>
+      <h2 class="title" style="font-size:60px">概念来源</h2>
+      <p class="lede mt-m">"科技创新和产业创新的深度融合"的政策来源，始于 2024 年 6 月全国科技大会讲话，
+        其后在多份中央文件与部门文件中持续重申，并于 2026 年 10 月形成专门文件。</p>
+    </div>
+  </div>
+  <div class="deck-footer"><span class="dim2">01 概念来源</span><span class="slide-number" data-current="3" data-total="29"></span></div>
+</section>
+
+<!-- ============ 4 政策沿革 ============ -->
+<section class="slide" data-title="政策沿革">
+  <p class="lbl">概念来源 · 政策沿革</p>
+  <h2 class="title">政策沿革</h2>
+  <div class="rule-thick" style="margin:6px 0 0"></div>
+  <div class="axis">
+    <div class="axis-row">
+      <div class="axis-col">
+        <div class="date">2024.6.24</div><div class="node"></div>
+        <div class="doc">讲话</div>
+      </div>
+      <div class="axis-col">
+        <div class="date">2024.7.18</div><div class="node"></div>
+        <div class="doc">二十届三中全会<br>《全面深化改革决定》</div>
+      </div>
+      <div class="axis-col">
+        <div class="date">2025.10.23</div><div class="node"></div>
+        <div class="doc">《十五五建议》</div>
+      </div>
+      <div class="axis-col">
+        <div class="date">2026.3.13</div><div class="node"></div>
+        <div class="doc">《十五五纲要》</div>
+      </div>
+      <div class="axis-col now">
+        <div class="date">2026.10.9</div><div class="node"></div>
+        <div class="doc">《发展新质生产力的意见》</div>
+      </div>
+      <div class="axis-col now">
+        <div class="date">2026.10.13</div><div class="node"></div>
+        <div class="doc">《科技兴商意见》</div>
+      </div>
+      <div class="axis-col now">
+        <div class="date">2026.12.21</div><div class="node"></div>
+        <div class="doc">《两创意见》</div>
+      </div>
+    </div>
+  </div>
+  <div class="deck-footer"><span class="dim2">01 概念来源</span><span class="slide-number" data-current="4" data-total="29"></span></div>
+</section>
+
+<!-- ============ 5 讲话（2024.6.24） ============ -->
+<section class="slide pol" data-title="讲话（2024.6.24）">
+  <p class="lbl">概念来源 · 政策原文</p>
+  <h2 class="title">讲话</h2>
+  <div class="pol-meta">2024.6.24 · 全国科技大会、国家科学技术奖励大会、两院院士大会</div>
+  <div class="rule-thick" style="margin:6px 0 14px"></div>
+  <div class="two" style="gap:28px">
+    <div>
+      <div class="src">
+        <span class="ttl">原文</span>
+        习近平总书记在全国科技大会、国家科学技术奖励大会、两院院士大会上的重要讲话（以下简称“讲话”）中强调，“<em>扎实推动科技创新和产业创新深度融合，助力发展新质生产力</em>”。
+      </div>
+      <div class="pol-item">
+        <div class="h">融合的基础</div>
+        <div class="p">增加高质量科技供给。</div>
+      </div>
+      <div class="pol-item">
+        <div class="h">融合的关键</div>
+        <div class="p">强化企业科技创新主体地位。</div>
+      </div>
+      <div class="pol-item">
+        <div class="h">融合的途径</div>
+        <div class="p">促进科技成果转化应用。</div>
+      </div>
+    </div>
+    <div>
+      <div class="src">
+        <span class="ttl">第二，扎实推动科技创新和产业创新深度融合，助力发展新质生产力。</span>
+        融合的基础是增加高质量科技供给。要聚焦现代化产业体系建设的重点领域和薄弱环节，针对集成电路、工业母机、基础软件、先进材料、科研仪器、核心种源等瓶颈制约，加大技术研发力度，为确保重要产业链供应链自主安全可控提供科技支撑。要瞄准未来科技和产业发展制高点，加快新一代信息技术、人工智能、量子科技、生物科技、新能源、新材料等领域科技创新，培育发展新兴产业和未来产业。要积极运用新技术改造提升传统产业，推动产业高端化、智能化、绿色化。
+      </div>
+    </div>
+  </div>
+  <div class="deck-footer"><span class="dim2">01 概念来源</span><span class="slide-number" data-current="5" data-total="29"></span></div>
+</section>
+
+<!-- ============ 6 二十届三中全会《全面深化改革决定》（2024.7.18） ============ -->
+<section class="slide pol" data-title="二十届三中全会《全面深化改革决定》（2024.7.18）">
+  <p class="lbl">概念来源 · 政策原文</p>
+  <h2 class="title">二十届三中全会<br><span class="t-sub">《全面深化改革决定》</span></h2>
+  <div class="pol-meta">2024.7.18 · 党的二十届三中全会</div>
+  <div class="rule-thick" style="margin:6px 0 14px"></div>
+  <div class="src">
+    <span class="ttl">原文</span>
+    党的二十届三中全会强调，要“<em>加强创新资源统筹和力量组织，推动科技创新和产业创新融合发展</em>”。
+  </div>
+  <div class="pol-file">《中共中央关于进一步全面深化改革推进中国式现代化的决定》</div>
+  <div class="pol-item">
+    <div class="h">（14）深化科技体制改革</div>
+    <div class="p">坚持面向世界科技前沿、面向经济主战场、面向国家重大需求、面向人民生命健康，优化重大科技创新组织机制，统筹强化关键核心技术攻关，推动科技创新力量、要素配置、人才队伍体系化、建制化、协同化。加强国家战略科技力量建设，完善国家实验室体系，优化国家科研机构、高水平研究型大学、科技领军企业定位和布局，推进科技创新央地协同，统筹各类科创平台建设，鼓励和规范发展新型研发机构，发挥我国超大规模市场引领作用，<em>加强创新资源统筹和力量组织，推动科技创新和产业创新融合发展</em>。构建科技安全风险监测预警和应对体系，加强科技基础条件自主保障。健全科技社团管理制度。扩大国际科技交流合作，鼓励在华设立国际科技组织，优化高校、科研院所、科技社团对外专业交流合作管理机制。</div>
+  </div>
+  <div class="deck-footer"><span class="dim2">01 概念来源</span><span class="slide-number" data-current="6" data-total="29"></span></div>
+</section>
+
+<!-- ============ 7 《十五五建议》（2025.10.23） ============ -->
+<section class="slide pol" data-title="《十五五建议》（2025.10.23）">
+  <p class="lbl">概念来源 · 政策原文</p>
+  <h2 class="title">《十五五建议》</h2>
+  <div class="pol-meta">2025.10.23 · 《中共中央关于制定国民经济和社会发展第十五个五年规划的建议》</div>
+  <div class="rule-thick" style="margin:6px 0 14px"></div>
+  <div class="src">
+    <span class="ttl">原文</span>
+    《中共中央关于制定国民经济和社会发展第十五个五年规划的建议》（以下简称《建议》）立足全面建设社会主义现代化国家关键阶段，明确提出“中国式现代化要靠科技现代化作支撑”，强调要“<em>推动科技创新和产业创新深度融合</em>”，要求“强化企业科技创新主体地位，推动创新资源向企业集聚，支持企业牵头组建创新联合体、更多承担国家科技攻关任务，鼓励企业加大基础研究投入，促进创新链产业链资金链人才链深度融合”。
+  </div>
+  <div class="pol-item">
+    <div class="h">（12）推动科技创新和产业创新深度融合</div>
+    <div class="p">统筹国家战略科技力量建设，增强体系化攻关能力。强化科技基础条件自主保障，统筹科技创新平台基地建设。完善区域创新体系，布局建设区域科技创新中心和产业科技创新高地，强化国际科技创新中心策源功能。加快重大科技成果高效转化应用，布局建设概念验证、中试验证平台，加大应用场景建设和开放力度，加强知识产权保护和运用。营造具有全球竞争力的开放创新生态。支持青年科技人才创新创业。加强科学技术普及，培育创新文化，弘扬科学家精神。加强科技法治、伦理、诚信、安全建设。</div>
+  </div>
+  <div class="pol-item">
+    <div class="h">强化企业科技创新主体地位</div>
+    <div class="p">推动创新资源向企业集聚，支持企业牵头组建创新联合体、更多承担国家科技攻关任务，鼓励企业加大基础研究投入，促进创新链产业链资金链人才链深度融合。培育壮大科技领军企业，支持高新技术企业和科技型中小企业发展，提高企业研发费用加计扣除比例。加大政府采购自主创新产品力度。</div>
+  </div>
+  <div class="deck-footer"><span class="dim2">01 概念来源</span><span class="slide-number" data-current="7" data-total="29"></span></div>
+</section>
+
+<!-- ============ 8 《十五五纲要》（2026.3.13） ============ -->
+<section class="slide pol" data-title="《十五五纲要》（2026.3.13）">
+  <p class="lbl">概念来源 · 政策原文</p>
+  <h2 class="title">《十五五纲要》</h2>
+  <div class="pol-meta">2026.3.13 · 《中华人民共和国国民经济和社会发展第十五个五年规划纲要》</div>
+  <div class="rule-thick" style="margin:6px 0 14px"></div>
+  <div class="src">
+    <span class="ttl">原文</span>
+    《中华人民共和国国民经济和社会发展第十五个五年规划纲要》也在“加快高水平科技自立自强引领发展新质生产力”部分，提出要“<em>提升国家创新体系整体效能，全面增强自主创新能力，抢占科技发展制高点，推动科技创新和产业创新深度融合，不断催生新质生产力</em>”。
+  </div>
+  <div class="pol-chain">
+    <div class="node">第三篇<br>加快高水平科技自立自强引领发展新质生产力</div>
+    <div class="arw">›</div>
+    <div class="node">第二节<br>强化战略前沿领域科技布局</div>
+    <div class="arw">›</div>
+    <div class="node b">前沿技术攻关</div>
+  </div>
+  <div class="pol-item">
+    <div class="h">纲要总述</div>
+    <div class="p">抓住新一轮科技革命和产业变革历史机遇，统筹教育强国、科技强国、人才强国建设，提升国家创新体系整体效能，全面增强自主创新能力，抢占科技发展制高点，推动科技创新和产业创新深度融合，不断催生新质生产力。</div>
+  </div>
+  <div class="deck-footer"><span class="dim2">01 概念来源</span><span class="slide-number" data-current="8" data-total="29"></span></div>
+</section>
+
+<!-- ============ 9 《发展新质生产力的意见》（2026.10.9）之一 ============ -->
+<section class="slide pol" data-title="《发展新质生产力的意见》（2026.10.9）之一">
+  <p class="lbl">概念来源 · 政策原文</p>
+  <h2 class="title">《发展新质生产力的意见》</h2>
+  <div class="pol-meta">2026.10.9 · 中共中央国务院关于发展新质生产力的意见 · 其一</div>
+  <div class="rule-thick" style="margin:6px 0 14px"></div>
+  <div class="src">
+    <span class="ttl">开篇</span>
+    营造有利于科技创新和产业创新深度融合的良好发展生态，更好支撑高质量发展。
+  </div>
+  <div class="pol-file">三、推动科技创新和产业创新深度融合</div>
+  <div class="pol-item">
+    <div class="h">（六）改造提升传统产业</div>
+    <div class="p">守牢实体经济根基，巩固和拓展中国制造硬实力。以国家标准提升引领传统产业优化升级，支持企业用数智技术、绿色技术改造提升传统产业。组织实施重点产业提质升级行动，巩固提升矿业、冶金、化工、轻工、纺织、机械、船舶、建筑等产业在全球产业分工中的地位和竞争力。开展产业基础再造工程、重大技术装备攻关工程、制造业重大技术改造升级工程和大规模设备更新工程。强化对制造业企业技术改造的资金支持，落实技术改造投资相关税收优惠政策，促进制造业数智化转型，发展智能制造、绿色制造、服务型制造。增强质量技术基础能力，加强品牌建设。深入实施新一轮千亿斤粮食产能提升行动、种业振兴行动、智慧农业行动、农机装备高质量发展行动、设施农业现代化提升行动和农业科技创新条件建设工程，发展农业工厂等新形态。实施服务业扩能提质行动，分领域推进生产性服务业向专业化和价值链高端延伸，促进生活性服务业高品质、多样化、便利化发展。</div>
+  </div>
+  <div class="deck-footer"><span class="dim2">01 概念来源</span><span class="slide-number" data-current="9" data-total="29"></span></div>
+</section>
+
+<!-- ============ 10 《发展新质生产力的意见》（2026.10.9）之二 ============ -->
+<section class="slide pol" data-title="《发展新质生产力的意见》（2026.10.9）之二">
+  <p class="lbl">概念来源 · 政策原文</p>
+  <h2 class="title">《发展新质生产力的意见》</h2>
+  <div class="pol-meta">2026.10.9 · 中共中央国务院关于发展新质生产力的意见 · 其二</div>
+  <div class="rule-thick" style="margin:6px 0 12px"></div>
+  <div class="pol-tags"><span class="tag">传统产业</span><span class="tag">新兴产业</span><span class="tag">未来产业</span></div>
+  <div class="two" style="gap:24px">
+    <div>
+      <div class="pol-item">
+        <div class="h">（七）培育壮大新兴产业</div>
+        <div class="p">着力打造新兴支柱产业。加快新一代信息技术、新能源、新材料、智能网联新能源汽车、机器人、生物医药、高端装备、航空航天等战略性新兴产业发展，因地制宜建设各具特色、优势互补的战略性新兴产业集群，推动资源集聚、主体集中、成果集成、分工合作。深化产业内、产品内专业分工，促进跨行业跨区域融合，避免“内卷式”竞争。以产业链为主导、以企业为主体建立跨区域产业协作机制，支持东部地区带动中西部和东北地区因地制宜发展新兴产业。在确保安全前提下，推动低空经济、商业航天健康有序发展。</div>
+      </div>
+      <div class="pol-item">
+        <div class="h">（八）前瞻布局未来产业</div>
+        <div class="p">探索多元技术路线、典型应用场景、可行商业模式、市场监管规则，推动量子科技、生物制造、氢能和核聚变能、脑机接口、具身智能、第六代移动通信等未来产业发展，加快形成比较完备的产业生态。建立未来产业投入增长和风险分担机制，充分用好现有财政政策支持未来产业发展，引导社会资本持续加大投入。</div>
+      </div>
+    </div>
+    <div>
+      <div class="pol-item">
+        <div class="h">（九）促进实体经济和数字经济深度融合</div>
+        <div class="p">健全数据产权归属认定、市场交易、权益分配、利益保护制度，实施数据要素相关试点示范工程，充分释放数据要素潜能。优化国家数据基础设施布局建设和运营，深入开展制造业数字化转型行动，实施“东数西算”、智能制造、工业互联网创新发展等工程，建设全国一体化算力网、国家区块链网络。完善促进数字产业化和产业数字化政策体系，打造具有国际竞争力的数字产业集群。</div>
+      </div>
+      <div class="pol-item">
+        <div class="h">（十）全面实施“人工智能+”行动</div>
+        <div class="p">推进人工智能对传统产业的改造，加快推进智能网联新能源汽车、智能智能手机和电脑、人形机器人等新一代智能终端场景应用。加快人工智能等数智技术创新，突破基础理论和核心技术，强化算力、算法、数据等高效供给。因地制宜、分业施策布局国家人工智能行业应用中试基地和高价值应用场景，大力推动人工智能在各行业应用。构建技术监测、风险预警、应急响应体系，确保人工智能安全、可靠、可控。</div>
+      </div>
+    </div>
+  </div>
+  <div class="deck-footer"><span class="dim2">01 概念来源</span><span class="slide-number" data-current="10" data-total="29"></span></div>
+</section>
+
+<!-- ============ 11 《科技兴商意见》（2026.10.13） ============ -->
+<section class="slide pol" data-title="《科技兴商意见》（2026.10.13）">
+  <p class="lbl">概念来源 · 政策原文</p>
+  <h2 class="title">《科技兴商意见》</h2>
+  <div class="pol-meta">2026.10.13 · 商务部等九部门《关于加快推进科技兴商的意见》</div>
+  <div class="rule-thick" style="margin:6px 0 14px"></div>
+  <div class="src">
+    <span class="ttl">原文</span>
+    商务部等九部门发布《关于加快推进科技兴商的意见》，提出聚焦消费品领域培育技术转移转化机构，<em>加速脑机接口、具身智能等前沿科技成果向市场转化</em>。
+  </div>
+  <div class="pol-item">
+    <div class="h">（十六）加强科技研发和转化应用</div>
+    <div class="p">加快新型显示、智能终端等领域关键技术研发，拓展典型应用场景、可行商业模式，强化示范推广。培育建设商业技术应用创新中心。聚焦消费品领域培育一批技术转移转化机构，加速脑机接口、具身智能等前沿科技成果向市场转化。支持智能仓储、数智供应链等领域商贸企业申报专精特新企业。</div>
+  </div>
+  <div class="deck-footer"><span class="dim2">01 概念来源</span><span class="slide-number" data-current="11" data-total="29"></span></div>
+</section>
+
+<!-- ============ 12 《两创意见》（2026.12.21）· 主要条款 ============ -->
+<section class="slide pol" data-title="《两创意见》（2026.12.21）· 主要条款">
+  <p class="lbl">概念来源 · 政策原文</p>
+  <h2 class="title">《两创意见》</h2>
+  <div class="pol-meta">2026.12.21 · 中共中央办公厅、国务院办公厅《关于推动科技创新和产业创新深度融合的意见》</div>
+  <div class="rule-thick" style="margin:6px 0 14px"></div>
+  <div class="src">
+    <span class="ttl">发布</span>
+    10月21日中共中央办公厅、国务院办公厅发布《关于推动科技创新和产业创新深度融合的意见》。
+  </div>
+  <div class="pol-item">
+    <div class="h">（十）鼓励企业参与高校、科研院所科研活动和人才培养</div>
+    <div class="p">支持企业与其他创新主体共建研发机构、共设科研项目。</div>
+  </div>
+  <div class="pol-item">
+    <div class="h">（十五）全面实施专利开放许可制度</div>
+    <div class="p">加强国家重大科技项目专利布局。专利开放许可为高校院所成果向企业低成本扩散提供了制度化通道。</div>
+  </div>
+  <div class="pol-item">
+    <div class="h">（六）前瞻布局未来产业</div>
+    <div class="p">在量子科技、生物制造、氢能和核聚变能、脑机接口、具身智能、第六代移动通信等前沿领域，探索多元技术路线、典型应用场景、可行商业模式，加快推进前沿技术产业化//商业化，培育形成未来产业。</div>
+  </div>
+  <div class="deck-footer"><span class="dim2">01 概念来源</span><span class="slide-number" data-current="12" data-total="29"></span></div>
+</section>
+
+<!-- ============ 13 《两创意见》（2026.12.21）· 专利开放许可制度 ============ -->
+<section class="slide pol" data-title="《两创意见》（2026.12.21）· 专利开放许可制度">
+  <p class="lbl">概念来源 · 政策原文</p>
+  <h2 class="title">《两创意见》<span class="t-sub">专利开放许可制度</span></h2>
+  <div class="pol-meta">2026.12.21 · 《关于推动科技创新和产业创新深度融合的意见》</div>
+  <div class="rule-thick" style="margin:6px 0 14px"></div>
+  <div class="src">
+    <span class="ttl">制度内涵</span>
+    专利开放许可制度是国家推动科技成果转化的重要抓手。简单来说，专利权人可以向国家知识产权局声明愿意以合理条件许可任何人使用其专利，公告后任何人都可以按照声明的条件获得许可，大大降低了技术交易的谈判成本。
+  </div>
+  <div class="src" style="border-left-color:var(--navy);background:var(--navy-l)">
+    <span class="ttl" style="color:var(--navy)">实施影响</span>
+    这一制度从试点走向全面实施，对不同类型的企业都意味着机遇。
+  </div>
+  <div class="two" style="gap:24px;margin-top:14px">
+    <div class="doc-card">
+      <h4>对高校、科研院所和行业龙头企业</h4>
+      <p class="xs mt-s">开放许可提供了一条低成本的技术变现路径，不用再为每一笔许可单独谈判，专利的商业价值可以更快地转化为收益。</p>
+    </div>
+    <div class="doc-card red">
+      <h4>对科技型中小企业</h4>
+      <p class="xs mt-s">可以以更低的成本获取所需技术，缩短研发周期，快速跟上行业技术迭代的节奏。</p>
+    </div>
+  </div>
+  <div class="deck-footer"><span class="dim2">01 概念来源</span><span class="slide-number" data-current="13" data-total="29"></span></div>
+</section>
+
+<!-- ============ 14 概念含义 ============ -->
+<section class="slide" data-title="概念含义">
+  <div style="display:flex;align-items:center;gap:48px">
+    <div class="sec-num">02</div>
+    <div style="flex:1">
+      <p class="lbl">Part Two</p>
+      <h2 class="title" style="font-size:60px">概念含义</h2>
+      <p class="sec-sub">科技创新和产业创新的深度融合</p>
+    </div>
+  </div>
+  <div class="deck-footer"><span class="dim2">02 概念含义</span><span class="slide-number" data-current="14" data-total="29"></span></div>
+</section>
+
+<!-- ============ 15 科技创新 ============ -->
+<section class="slide" data-title="科技创新">
+  <p class="lbl">概念含义</p>
+  <h2 class="title">科技创新</h2>
+  <div class="rule-thick" style="margin:6px 0 18px"></div>
+  <div class="two" style="gap:34px">
+    <div class="two-col">
+      <h4>基本属性</h4>
+      <p class="body-txt mt-s">一方面，科技创新以知识生产为核心，创新成果具有非竞争性，容易被他人无偿使用；
+        另一方面，科技创新处于创新链的前端，创新成果停留在观念形态或技术形态，距离转化为现实生产力仍存在较大差距。</p>
+    </div>
+    <div class="two-col alt">
+      <h4>由此产生的制度需求</h4>
+      <p class="body-txt mt-s">因此，科技创新需要制度激励以维持研发投入，通过转化通道以实现自身价值。</p>
+    </div>
+  </div>
+  <div class="quote mt-l">
+    科技创新以<em>知识生产</em>为核心 → 成果具有<em>非竞争性</em>，易被无偿使用；处于创新链<em>前端</em>，成果停留在观念形态或技术形态；
+    因而需要<em>制度激励</em>维持研发投入，需要<em>转化通道</em>实现自身价值。
+  </div>
+  <div class="deck-footer"><span class="dim2">02 概念含义</span><span class="slide-number" data-current="15" data-total="29"></span></div>
+</section>
+
+<!-- ============ 16 产业创新 ============ -->
+<section class="slide" data-title="产业创新">
+  <p class="lbl">概念含义</p>
+  <h2 class="title">产业创新</h2>
+  <div class="rule-thick" style="margin:6px 0 18px"></div>
+  <div class="two" style="gap:34px">
+    <div class="two-col">
+      <h4>在融合中的位置</h4>
+      <p class="body-txt mt-s">产业创新则是科技创新成果转化为现实经济增长的关键环节，其涵盖创新支撑、创新活力和创新质量等多个维度，
+        既包括创新要素在产业层面的集聚与配置，也包括创新成果在产业层面的扩散与增值。</p>
+    </div>
+    <div class="two-col alt">
+      <h4>与科技创新的核心差异</h4>
+      <p class="body-txt mt-s">与科技创新相比，产业创新的核心不在于知识的原始产出，而在于知识转化应用，
+        并以市场竞争力作为核心衡量标准。</p>
+    </div>
+  </div>
+  <div class="grid g3 mt-l anim-stagger-list" style="gap:18px">
+    <div class="doc-card"><h4>创新支撑</h4><p class="sm mt-s">创新要素在产业层面的集聚与配置。</p></div>
+    <div class="doc-card red"><h4>创新活力</h4><p class="sm mt-s">产业创新所涵盖的多个维度之一。</p></div>
+    <div class="doc-card gold"><h4>创新质量</h4><p class="sm mt-s">以市场竞争力作为核心衡量标准。</p></div>
+  </div>
+  <div class="deck-footer"><span class="dim2">02 概念含义</span><span class="slide-number" data-current="16" data-total="29"></span></div>
+</section>
+
+<!-- ============ 17 科技创新和产业创新的深度融合 ============ -->
+<section class="slide" data-title="科技创新和产业创新的深度融合">
+  <p class="lbl">概念含义</p>
+  <h2 class="title">科技创新和产业创新的深度融合</h2>
+  <div class="rule-thick" style="margin:6px 0 0"></div>
+  <p class="big-quote mt-l">科技创新与产业创新深度融合是以<em>科技创新突破引领产业体系升级</em>、<br>以<em>产业发展需求牵引科技攻关方向</em>的动态协同过程。</p>
+  <div class="chain mt-l">
+    <div class="node b">科技创新突破</div><div class="arw">→</div>
+    <div class="node">引领产业体系升级</div>
+    <div class="arw" style="width:40px"></div>
+    <div class="node">产业发展需求</div><div class="arw">→</div>
+    <div class="node">牵引科技攻关方向</div>
+  </div>
+  <div class="two mt-l" style="gap:34px">
+    <div class="two-col">
+      <h4>自上而下的牵引</h4>
+      <p class="sm mt-s">科技创新突破 → 引领产业体系升级。</p>
+    </div>
+    <div class="two-col alt">
+      <h4>自下而上的牵引</h4>
+      <p class="sm mt-s">产业发展需求 → 牵引科技攻关方向。两者构成动态协同。</p>
+    </div>
+  </div>
+  <div class="deck-footer"><span class="dim2">02 概念含义</span><span class="slide-number" data-current="17" data-total="29"></span></div>
+</section>
+
+<!-- ============ 18 特点 ============ -->
+<section class="slide" data-title="特点">
+  <p class="lbl">概念含义</p>
+  <h2 class="title">特点</h2>
+  <div class="rule-thick" style="margin:6px 0 18px"></div>
+  <div class="pts anim-stagger-list">
+    <div class="pt"><div class="mk">一</div><div class="tx">
+      <h4>贯通性</h4>
+      <p>科技创新与产业创新贯通基础研究和应用推广的全链条，要求实现科学技术化、技术科学化、科技产业化与产业科技化，形成从知识生产、技术开发到产业应用的完整闭环。在此过程中，产业实践中产生的技术需求与市场反馈逆向传导至科研环节，促使科研方向调整与技术迭代升级，最终构建以产业需求引导科研方向、以科研成果反馈产业发展的循环机制，使得创新链条各环节相互渗透，实现科技成果向现实生产力的高效转化。</p>
+    </div></div>
+    <div class="pt"><div class="mk">二</div><div class="tx">
+      <h4>跨领域融合性</h4>
+      <p>科技创新与产业创新深度融合突破了学科边界、行业壁垒与产业分割，呈现多学科交叉、多技术集成、多产业渗透的发展样态。技术创新不是单点突破，而是围绕产业生态进行全面突破；学科交叉融合引发知识跨界衔接，形成的复合型创新成果兼具多元属性；通用技术向制造、医疗、交通和金融等各领域渗透扩散，推动传统产业与新兴技术深度融合，而产业之间跨界联动，不断拓展创新边界，实现产业创新功能互补和创新价值链条延伸。</p>
+    </div></div>
+    <div class="pt"><div class="mk">三</div><div class="tx">
+      <h4>双向互动性</h4>
+      <p>科技创新为产业创新提供技术源头，产业创新为科技创新提供转化载体、应用场景与需求牵引。科技创新与产业创新相互促进、双向反馈、相互强化，形成既独立发展又紧密耦合的结构，而二者融合体现为创新模式在维度、密度、广度、强度上的全面跃升，意味着从传统线性创新模式转向结构性耦合的创新模式。</p>
+    </div></div>
+  </div>
+  <div class="deck-footer"><span class="dim2">02 概念含义</span><span class="slide-number" data-current="18" data-total="29"></span></div>
+</section>
+
+<!-- ============ 19 理论基础 ============ -->
+<section class="slide" data-title="理论基础">
+  <div style="display:flex;align-items:center;gap:48px">
+    <div class="sec-num">03</div>
+    <div style="flex:1">
+      <p class="lbl">Part Three</p>
+      <h2 class="title" style="font-size:60px">理论基础</h2>
+      <p class="lede mt-m">分两条脉络：科技创新的理论脉络，与产业创新的理论脉络。</p>
+    </div>
+  </div>
+  <div class="deck-footer"><span class="dim2">03 理论基础</span><span class="slide-number" data-current="19" data-total="29"></span></div>
+</section>
+
+<!-- ============ 20 科技创新（理论） ============ -->
+<section class="slide s-dense" data-title="科技创新（理论）">
+  <p class="lbl">理论基础</p>
+  <h2 class="title">科技创新</h2>
+  <div class="rule-thick" style="margin:6px 0 14px"></div>
+  <div class="two" style="gap:28px">
+    <div>
+      <div class="lbl">理论脉络</div>
+      <div class="doc-card mt-s">
+        <h4>熊彼特 · 范内瓦·布什</h4>
+        <p class="xs mt-s">从理论发展来看，熊彼特最早将创新引入经济学分析［1］。最早讨论科技创新的是范内瓦·布什的《科学：无尽的前沿》报告。该报告指出，科学的进步对国家安全、身体健康、就业机会、生活水准和文化进步等都至关重要，并提出线性科技创新模型，即：</p>
+        <div class="chain mt-s" style="gap:0">
+          <div class="node" style="padding:5px 4px;font-size:11px">基础研究</div><div class="arw">→</div>
+          <div class="node" style="padding:5px 4px;font-size:11px">应用研究</div><div class="arw">→</div>
+          <div class="node" style="padding:5px 4px;font-size:11px">技术开发</div><div class="arw">→</div>
+          <div class="node b" style="padding:5px 4px;font-size:11px">生产经营</div>
+        </div>
+      </div>
+      <div class="doc-card red mt-s">
+        <h4>卡德韦尔</h4>
+        <p class="xs mt-s">在其著作《西方技术的转折点：技术、科学和历史研究》中首次提出"卡德韦尔定律"，即一个国家或地区只能在有限的时间内保持科技创新的主导地位，但人类整体的科技进步之所以能持续，是因为科技创新火炬会在不同国家间传递，形成一种全球性的科技创新接力赛。</p>
+      </div>
+      <div class="doc-card gold mt-s">
+        <h4>钱学森</h4>
+        <p class="xs mt-s">提出的科学技术体系包括自然科学、科学的社会科学、技术科学和工程技术；其中，工程技术综合应用前三个组成部分的成果，直接改造客观世界［25］。</p>
+      </div>
+      <div class="doc-card mt-s">
+        <h4>那拉亚那穆提</h4>
+        <p class="xs mt-s">在《发明与发现：反思无止境的前沿》一书中进一步批判了范内瓦·布什的线性模型，构建了发明-发现模型，揭示了科学理论研究与实际应用之间的内在逻辑和相互关系。</p>
+      </div>
+      <div class="doc-card red mt-s">
+        <h4>刘志迎</h4>
+        <p class="xs mt-s">针对创新链与产业链关系提出了两种耦合模式，即：</p>
+        <p class="xs mt-s">· 创新链赋能产业链耦合<br>· 创新链衍生产业链耦合［27］</p>
+      </div>
+    </div>
+    <div>
+      <div class="lbl">模型与概念</div>
+      <div class="doc-card mt-s">
+        <h4>链环-回路模型（Chain-Linked Model）</h4>
+        <p class="xs mt-s">克莱因和罗森伯格批判了范内瓦·布什的线性模型，提出了链环-回路模型，提出基础研究和发明设计过程的相互作用，以及"发明设计—知识—研究—设计"或"设计—知识—设计"等多种回路的多次反馈过程［26］。</p>
+        <div class="chain mt-s">
+          <div class="node" style="padding:6px;font-size:12px">发明设计</div><div class="arw">↔</div>
+          <div class="node" style="padding:6px;font-size:12px">知识</div><div class="arw">↔</div>
+          <div class="node" style="padding:6px;font-size:12px">研究</div><div class="arw">↔</div>
+          <div class="node b" style="padding:6px;font-size:12px">设计</div>
+        </div>
+      </div>
+      <div class="doc-card gold mt-s">
+        <h4>巴斯德象限</h4>
+        <p class="xs mt-s">斯托克斯在其著作《基础科学与技术创新：巴斯德象限》中，按照"追求知识"和"追求应用"两个轴划分了四象限，即：</p>
+        <div class="quad">
+          <div class="cell"><b>皮特森象限</b><em>技能训练与经验整理</em></div>
+          <div class="cell" style="background:var(--navy-l)"><b>巴斯德象限</b><em>应用基础研究</em></div>
+          <div class="cell"><b>爱迪生象限</b><em>纯应用研究</em></div>
+          <div class="cell"><b>波尔象限</b><em>纯基础研究</em></div>
+        </div>
+      </div>
+      <div class="doc-card mt-s">
+        <h4>两类知识</h4>
+        <p class="xs mt-s">乔尔·莫基尔在《雅典娜的礼物：知识经济的历史起源》一书中提出两类知识：</p>
+        <p class="xs mt-s">· <strong>命题性知识（Propositional Knowledge）</strong>：关于自然现象和规律的科学原理（"为什么"）<br>
+          · <strong>处方性知识（Prescriptive Knowledge）</strong>：关于如何制造和操作的技术、工艺和诀窍（"怎么做"）</p>
+      </div>
+      <div class="quote mt-s" style="font-size:13px">从学理逻辑来看，科技创新的理论内涵可以概括为：从基础研究、应用研究、技术开发、工程化验证和中试到商业化，涵盖科学、技术、创新的复杂双向互动体系。</div>
+    </div>
+  </div>
+  <div class="deck-footer"><span class="dim2">03 理论基础</span><span class="slide-number" data-current="20" data-total="29"></span></div>
+</section>
+
+<!-- ============ 21 产业创新（理论） ============ -->
+<section class="slide" data-title="产业创新（理论）">
+  <p class="lbl">理论基础</p>
+  <h2 class="title">产业创新</h2>
+  <div class="rule-thick" style="margin:6px 0 14px"></div>
+  <div class="two" style="gap:28px">
+    <div>
+      <div class="lbl">理论脉络</div>
+      <div class="doc-card mt-s">
+        <h4>坎宁安</h4>
+        <p class="xs mt-s">从理论脉络来看，产业创新概念的根源还是熊彼特的创新理论。坎宁安首次将"industrial innovation"作为独立学术概念使用，标志着产业创新研究正式从熊彼特创新理论中分化出来，成为独立研究领域；他强调的是新的产品、流程等的被采用，而非它们的发明与初始开发［30］。</p>
+      </div>
+      <div class="doc-card red mt-s">
+        <h4>弗里曼</h4>
+        <p class="xs mt-s">在其著作《产业创新经济学》中对产业创新进行了系统论述；1997年，他在与卢克·苏特合著的《产业创新经济学》第三版中，进一步完善了产业创新的国际维度分析。</p>
+      </div>
+      <div class="doc-card gold mt-s">
+        <h4>多德森和罗斯韦尔《产业创新手册》</h4>
+        <p class="xs mt-s">将产业创新界定为：</p>
+        <div class="quote mt-s" style="font-size:13px">在特定产业内，由技术突破、组织变革、市场拓展和制度调整等引发的系统性变革过程，其本质是通过生产要素的新组合实现产业效率提升与结构升级，并最终推动经济增长和社会福利改善。</div>
+        <p class="xs mt-s">产业创新不仅包括产品和工艺创新，还涵盖组织创新、管理创新、市场创新和制度创新等，且这些创新类型相互作用、协同演进。</p>
+      </div>
+    </div>
+    <div>
+      <div class="lbl">范式与系统观</div>
+      <div class="doc-card mt-s">
+        <h4>霍布迪</h4>
+        <p class="xs mt-s">以韩国、新加坡和中国香港、中国台湾等地区为例，对东亚新兴工业化国家和地区的电子产业生产做了深入研究，并提出后发企业技术学习的"OEM→ODM→OBM"模式［31］，这也是产业创新的典型范式。</p>
+        <div class="chain mt-s">
+          <div class="node" style="padding:8px;font-size:12.5px">OEM</div><div class="arw">→</div>
+          <div class="node" style="padding:8px;font-size:12.5px">ODM</div><div class="arw">→</div>
+          <div class="node b" style="padding:8px;font-size:12.5px">OBM</div>
+        </div>
+      </div>
+      <div class="doc-card red mt-s">
+        <h4>布雷斯基和马勒尔巴（1997）· 产业创新系统</h4>
+        <p class="xs mt-s">提出了产业创新系统（sectoral innovation system），从系统观视角深化了产业创新分类理论和产业生命周期理论，将产业创新系统定义为：</p>
+        <div class="quote red mt-s" style="font-size:13px">积极开发和制造产业产品以及生产和利用产业技术的企业系统［32］。</div>
+      </div>
+      <div class="quote mt-s" style="font-size:13.5px">从学理逻辑上看，产业创新是面向市场需求的、涵盖产业技术、组织管理、市场营销和宏观制度等多元要素的新组合，是产业链上下游企业之间的联动创新。</div>
+    </div>
+  </div>
+  <div class="deck-footer"><span class="dim2">03 理论基础</span><span class="slide-number" data-current="21" data-total="29"></span></div>
+</section>
+
+<!-- ============ 22 章节 · 专利应用 ============ -->
+<section class="slide" data-title="章节 · 专利应用">
+  <div style="display:flex;align-items:center;gap:48px">
+    <div class="sec-num">04</div>
+    <div style="flex:1">
+      <p class="lbl">Part Four</p>
+      <h2 class="title" style="font-size:60px">专利应用</h2>
+    </div>
+  </div>
+  <div class="deck-footer"><span class="dim2">04 专利应用</span><span class="slide-number" data-current="22" data-total="29"></span></div>
+</section>
+
+<!-- ============ 23 专利应用 ============ -->
+<section class="slide" data-title="专利应用">
+  <p class="lbl">专利应用</p>
+  <h2 class="title">专利应用</h2>
+  <div class="rule-thick" style="margin:6px 0 16px"></div>
+  <p class="body-txt">这一过程涉及多元创新主体、多个创新环节与多种创新要素，需要成果权利边界清晰、流转规则顺畅和收益分配公平。</p>
+  <div class="grid g3 mt-l anim-stagger-list" style="gap:22px">
+    <div class="doc-card">
+      <h4>创新主体融合</h4>
+      <p class="sm mt-s">需要明确成果的<strong>权利归属</strong>。</p>
+    </div>
+    <div class="doc-card red">
+      <h4>要素融通</h4>
+      <p class="sm mt-s">需要成果具备<strong>可交易的权利形态</strong>。</p>
+    </div>
+    <div class="doc-card gold">
+      <h4>创新链条耦合</h4>
+      <p class="sm mt-s">需要<strong>稳定的许可与转化规则</strong>。</p>
+    </div>
+  </div>
+  <div class="two mt-l" style="gap:34px">
+    <div class="two-col">
+      <h4>三项要求</h4>
+      <p class="sm mt-s">成果权利边界清晰 · 流转规则顺畅 · 收益分配公平。</p>
+    </div>
+    <div class="two-col alt">
+      <h4>对应关系</h4>
+      <p class="sm mt-s">融合的三种形态（主体融合、要素融通、链条耦合），分别对应权属、权利形态、许可与转化规则三项制度供给。</p>
+    </div>
+  </div>
+  <div class="deck-footer"><span class="dim2">04 专利应用</span><span class="slide-number" data-current="23" data-total="29"></span></div>
+</section>
+
+<!-- ============ 24 专利对融合性创新的作用 ============ -->
+<section class="slide" data-title="专利对融合性创新的作用">
+  <p class="lbl">专利应用</p>
+  <h2 class="title">专利对融合性创新的作用</h2>
+  <div class="rule-thick" style="margin:6px 0 14px"></div>
+  <div class="two" style="gap:26px">
+    <div class="quote" style="font-size:14.5px">专利权制度不是科技创新与产业创新深度融合的外在附属，而是嵌入科技创新与产业创新深度融合全过程的基础性制度安排。</div>
+    <div class="quote gold" style="font-size:14.5px">专利权制度通过<em>权利配置、收益安排和秩序维护</em>将分散的创新活动转化为稳定的制度关系，从而为科技创新与产业创新深度融合提供基础性支撑。</div>
+  </div>
+  <div class="grid g3 mt-l anim-stagger-list" style="gap:20px">
+    <div class="doc-card">
+      <div class="when">第一</div>
+      <h4>激励科技创新与产业创新的持续投入</h4>
+      <p class="xs mt-s">在科技创新与产业创新深度融合过程中，创新成果财产化不是将所有知识信息绝对私有化，而是通过有限排他权解决无形成果难以控制和交易的问题。专利保护制度作为国家制度体系建设的重要组成部分，是促进科技创新的制度保障。专利制度在特定保护条件、期限与范围内，赋予创新主体控制特定利用行为并且获得收益的权利，激励与保护创新者的创新活动，保护创新成果合法权益，激励创新主体加大研发投资，对创新活动产生显著的正向促进作用。专利制度的激励机制不仅作用于研发端，而且在应用链也发挥作用——激励企业将技术优势转化为产品优势和产业优势，在创新链前端与产业链后端之间形成贯通的动力机制。科技创新与产业创新深度融合产生的创新成果，并不具备直接进入市场流转的资格，而必须被纳入明确的权利结构，才能实现产业化、市场化和资本化。</p>
+    </div>
+    <div class="doc-card red">
+      <div class="when">第二</div>
+      <h4>协调科技创新与产业创新深度融合中的多元利益</h4>
+      <p class="xs mt-s">科技创新与产业创新深度融合涉及多方主体，高校、科研院所、企业、投资机构和研发人员共同参与创新，如果缺乏合理的权利配置和收益分配机制，就可能出现贡献与收益不匹配、成果归属争议和后续转化受阻等问题，从而影响各方主体的协同创新关系。专利权制度本质上是一种利益平衡机制，通过确立权属规则、许可规则、收益分配规则和权利限制规则，为多元主体的利益协调提供制度框架，在创新者、使用者和社会公众等多方利益发生冲突时寻求利益平衡。</p>
+    </div>
+    <div class="doc-card gold">
+      <div class="when">第三</div>
+      <h4>维护科技创新与产业创新深度融合的公平竞争秩序</h4>
+      <p class="xs mt-s">在科技创新与产业创新深度融合过程中，创新成果在不同主体与不同环节之间流转，流转的顺畅程度取决于市场秩序的稳定性和交易预期的确定性。专利权制度通过市场机制促进成果转化与资源优化配置，平衡各主体利益。专利权制度赋予专利权人以专有权，使权利人将创新成果以产品化、市场化的形式投入商业性运营并占据更大的市场份额，提升各个环节的价值，促进科技创新与产业创新深度融合。同时，专利权的权利限制规则、许可制度和禁止权利滥用规则在保护与共享之间维持动态平衡。在科技创新与产业创新融合过程中，创新主体可以根据市场反馈开展后续研发，在合法权利的边界之内进行改进创新与再创新，为科技创新与产业创新深度融合提供持久的秩序支撑。</p>
+    </div>
+  </div>
+  <div class="deck-footer"><span class="dim2">04 专利应用</span><span class="slide-number" data-current="24" data-total="29"></span></div>
+</section>
+
+<!-- ============ 25 与脑机接口专利结合 ============ -->
+<section class="slide" data-title="与脑机接口专利结合">
+  <div style="display:flex;align-items:center;gap:48px">
+    <div class="sec-num">05</div>
+    <div style="flex:1">
+      <p class="lbl">Part Five</p>
+      <h2 class="title" style="font-size:60px">与脑机接口专利结合</h2>
+    </div>
+  </div>
+  <div class="deck-footer"><span class="dim2">05 与脑机接口专利结合</span><span class="slide-number" data-current="25" data-total="29"></span></div>
+</section>
+
+<!-- ============ 26 目前的问题 ============ -->
+<section class="slide" data-title="目前的问题">
+  <p class="lbl">与脑机接口专利结合</p>
+  <h2 class="title">目前的问题</h2>
+  <div class="rule-thick" style="margin:6px 0 20px"></div>
+  <div class="steps anim-stagger-list">
+    <div class="step">
+      <div class="k">过去的叙事</div>
+      <div class="v">脑机接口过去几年的叙事，大量集中在"技术突破"和"临床首例"上。</div>
+    </div>
+    <div class="step">
+      <div class="k">技术突破不等于商业成功</div>
+      <div class="v">一家公司做出了全球首例手术，和一家公司能把产品卖出去、收回成本、持续经营，是两件事。</div>
+    </div>
+    <div class="step">
+      <div class="k">行业能否良性发展</div>
+      <div class="v">只有企业成功商业化了，赚到钱了，整个脑机接口行业才能良性发展，长期靠输血靠情怀支撑的行业是难以持续的。</div>
+    </div>
+    <div class="step">
+      <div class="k">瓶颈的转移</div>
+      <div class="v">脑机接口的瓶颈，正在从"能不能做出来"转向"做出来之后怎么赚钱"。</div>
+    </div>
+  </div>
+  <div class="quote mt-l red" style="font-size:16px">
+    脑机接口的瓶颈，正在从<em>"能不能做出来"</em>转向<em>"做出来之后怎么赚钱"</em>。
+  </div>
+  <div class="deck-footer"><span class="dim2">05 与脑机接口专利结合</span><span class="slide-number" data-current="26" data-total="29"></span></div>
+</section>
+
+<!-- ============ 27 如何赚钱 ============ -->
+<section class="slide" data-title="如何赚钱">
+  <p class="lbl">与脑机接口专利结合</p>
+  <h2 class="title">如何赚钱</h2>
+  <div class="rule-thick" style="margin:6px 0 16px"></div>
+  <div class="two" style="gap:32px">
+    <div class="two-col">
+      <h4>临床落地：康复机器人</h4>
+      <p class="body-txt mt-s">前不久，一名受重伤的患者在暨南大学附属第一医院使用脑机接口康复机器人进行康复训练。
+        "患者既有关节损伤，也有脑损伤，利用脑机接口康复机器人达到了理想的康复效果。"华南理工大学教授谢龙汉介绍，
+        这项技术基于团队自主研发的非侵入式脑机接口，结合人工智能算法与康复机器人，通过融合脑电、肌电、姿态等多源信号，
+        形成了从"被动搬运"到"主动参与"的康复新模式。</p>
+    </div>
+    <div class="two-col alt">
+      <h4>专利转化：知识产权变现</h4>
+      <p class="body-txt mt-s">持续深耕脑机接口领域，谢龙汉团队拥有100多项专利成果。
+        "我们形成'感知—决策—执行'的全链条技术布局，通过专利买断、先使用后买断、知识产权作价入股等方式转化落地，
+        实现总金额近3000万元。"谢龙汉说。</p>
+    </div>
+  </div>
+  <div class="kpis mt-l anim-stagger-list">
+    <div class="kpi"><div class="n">100+</div><div class="d">谢龙汉团队拥有的专利成果</div></div>
+    <div class="kpi"><div class="n">感知—决策—执行</div><div class="d">全链条技术布局</div></div>
+    <div class="kpi"><div class="n">近3000万元</div><div class="d">通过专利买断、先使用后买断、知识产权作价入股等方式实现总金额</div></div>
+  </div>
+  <div class="chain mt-l">
+    <div class="node">多源信号融合<br><span style="font-size:11.5px">脑电 · 肌电 · 姿态</span></div>
+    <div class="arw">→</div>
+    <div class="node">非侵入式脑机接口 + 人工智能算法 + 康复机器人</div>
+    <div class="arw">→</div>
+    <div class="node b">从"被动搬运"到"主动参与"</div>
+  </div>
+  <div class="deck-footer"><span class="dim2">05 与脑机接口专利结合</span><span class="slide-number" data-current="27" data-total="29"></span></div>
+</section>
+
+<!-- ============ 28 专利角度的困境 ============ -->
+<section class="slide" data-title="专利角度的困境">
+  <p class="lbl">与脑机接口专利结合</p>
+  <h2 class="title">专利角度的困境</h2>
+  <div class="rule-thick" style="margin:6px 0 14px"></div>
+  <p class="body-txt">脑机接口专利授权中较为常见的障碍主要体现为两个方面：</p>
+  <div class="two mt-m" style="gap:26px">
+    <div class="doc-card red">
+      <h4>一是 · 专利客体排除范围</h4>
+      <p class="sm mt-s">由于脑机接口与人体生理活动及认知过程高度关联，容易落入各国专利法排除保护的客体范围。</p>
+    </div>
+    <div class="doc-card gold">
+      <h4>二是 · 创造性审查</h4>
+      <p class="sm mt-s">由于脑机接口具有明显的跨学科融合特征，其技术方案更容易在创造性审查中被认为能够由现有技术组合得到。</p>
+    </div>
+  </div>
+  <div class="lbl mt-l">专利客体适格性审查：欧洲 · 日本 · 美国</div>
+  <table class="law compact mt-s">
+    <tr>
+      <th style="width:10%">法域</th><th style="width:22%">法律依据</th><th style="width:30%">审查立场</th><th style="width:38%">案例与结果</th>
+    </tr>
+    <tr>
+      <td class="j">欧洲</td>
+      <td>《欧洲专利公约》第五十三条第三项</td>
+      <td>人体诊断、治疗及外科方法原则上属于专利排除客体。</td>
+      <td>Neuralink申请的脑机接口专利因涉及机器人实施电极植入，被欧洲专利局视为外科治疗方法而受到审查意见。申请人随后修改权利要求，将保护范围由机器人实施植入手术调整为术前机器人配置及配置参数，用"配置"代替"操作"，最终获得授权。</td>
+    </tr>
+    <tr>
+      <td class="j">日本</td>
+      <td>《日本专利法》第二十九条第一款关于"产业上利用可能性"的规定</td>
+      <td>日本的审查思路与欧洲具有一定相似性，但其法律依据不同。应依据权利要求所记载的实际功能进行判断，而非申请人赋予发明的技术定位。</td>
+      <td>在脑电信号晕动症干预案中，申请人强调，其发明属于基于脑电信号处理、算法模型及自适应人机交互的人机交互技术方案，脑电分析仅用于状态识别，冥想引导作用于设备输出内容，并非医学诊断或治疗。然而，日本特许厅认为，由于权利要求包括根据脑电信号判断晕动症状态，并依据判断结果引导用户冥想以缓解或预防晕动症，因此分别构成人体诊断方法和人体治疗方法，最终维持驳回决定。</td>
+    </tr>
+    <tr>
+      <td class="j">美国</td>
+      <td>《美国专利法》第一百零一条</td>
+      <td>美国专利法并未将医疗方法作为专利排除客体，因此脑机接口涉及人体活动时，其专利适格性问题主要体现为对抽象思想、心理过程及自然现象的审查。</td>
+      <td>在基于脑机接口的音乐推断方法专利中，美国专利商标局认为"基于脑信号数据估计旋律轮廓"属于心理过程，仅包含脑信号接收及通用计算机实现，未将抽象概念整合至实际应用。在申请人将相关电位峰值包络、delta波段峰值包络及机器学习模型等具体神经信号处理技术纳入技术方案后，该专利获得了授权。</td>
+    </tr>
+  </table>
+  <div class="deck-footer"><span class="dim2">05 与脑机接口专利结合</span><span class="slide-number" data-current="28" data-total="29"></span></div>
+</section>
+
+<!-- ============ 29 创造性 ============ -->
+<section class="slide" data-title="创造性">
+  <p class="lbl">与脑机接口专利结合</p>
+  <h2 class="title">创造性</h2>
+  <div class="rule-thick" style="margin:6px 0 16px"></div>
+  <p class="body-txt">由于脑机接口往往融合神经工程、人工智能、人机交互等多个已有技术领域，各专利局还着重审查申请人主张的权利的创造性条件。</p>
+  <div class="case mt-l">
+    <div class="h">增强现实脑机接口专利审查案</div>
+    <p>在美国专利商标局依据《美国专利法》第一百零三条认为，数字命令映射及反馈等技术特征均可由多篇现有技术文献组合获得，因此缺乏创造性。</p>
+    <p>对此，申请人进一步限定能力代理、用户上下文及环境交互等新的技术特征组合，使各技术特征之间形成新的协同技术效果。</p>
+    <div class="res">最终，美国专利商标局认为现有技术既未公开该组合，也未提供相应的技术启示，从而撤销了创造性驳回并授予专利。</div>
+  </div>
+  <div class="two mt-l" style="gap:30px">
+    <div class="two-col">
+      <h4>审查意见</h4>
+      <p class="sm mt-s">数字命令映射及反馈等技术特征均可由多篇现有技术文献组合获得 → 缺乏创造性。</p>
+    </div>
+    <div class="two-col alt">
+      <h4>申请人应对</h4>
+      <p class="sm mt-s">进一步限定能力代理、用户上下文及环境交互等新的技术特征组合，使各技术特征之间形成新的<strong>协同技术效果</strong>。</p>
+    </div>
+  </div>
+  <div class="quote mt-l" style="font-size:14.5px">最终，美国专利商标局认为现有技术既未公开该组合，也未提供相应的技术启示，从而撤销了创造性驳回并授予专利。</div>
+  <div class="deck-footer"><span class="dim2">05 与脑机接口专利结合</span><span class="slide-number" data-current="29" data-total="29"></span></div>
+</section>
+
+</div>
+<script src="assets/runtime.js"></script>
+</body></html>
